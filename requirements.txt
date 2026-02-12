@@ -1,0 +1,7 @@
+# PacMan AI Project Requirements
+# Python 3.7+
+
+# No external dependencies required
+# This project uses only Python standard library modules:
+# - random: for ghost random movement
+# - copy: for object copying operations (if needed)

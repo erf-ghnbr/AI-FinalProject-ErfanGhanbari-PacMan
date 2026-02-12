@@ -33,4 +33,19 @@ class GameState:
             else:
                 k =-100
 
-            return self.score + k
+            l=0
+            if len(self.PACMAN_MOVES) > 0:
+                from src import bfs
+                shortest_path_to_food = bfs(self, self.PACMAN_MOVES[-1], self.MOVES, self.OBSTACLES, self.BOARD_WIDTH, self.BOARD_HEIGHT)
+                if self.pacman in shortest_path_to_food:
+                    i=0
+                    for pos in shortest_path_to_food:
+                        if self.pacman == pos:
+                            break
+                        i += 1
+                    l = i * 150
+                else:
+                    l=-100
+
+            return self.score + k  + l
+

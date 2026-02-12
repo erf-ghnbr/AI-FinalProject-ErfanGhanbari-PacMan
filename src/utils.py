@@ -1,5 +1,26 @@
 from src import GameState
 
+def bfs(game_state, start, MOVES, OBSTACLES, BOARD_WIDTH, BOARD_HEIGHT):
+    explored = []
+    queue = [[start]]
+
+    while queue:
+        path = queue.pop(0)
+        node = path[-1]
+
+        if node not in explored:
+            for move in MOVES.values():
+                new_pos = (node[0]+move[0],node[1]+move[1])
+                if (move !=(0,0)) and (new_pos not in explored) and (new_pos not in OBSTACLES) and (0 <= new_pos[0] < BOARD_WIDTH and 0 <= new_pos[1] < BOARD_HEIGHT):
+                    new_path = list(path)
+                    new_path.append(new_pos)
+                    queue.append(new_path)
+
+                if new_pos in game_state.points:
+                    return new_path
+            explored.append(node)
+
+
 def get_child_state(state, move, is_pacman, ghost_index=None):
     if is_pacman:
         new_position = (state.pacman[0] + move[0], state.pacman[1] + move[1])

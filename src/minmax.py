@@ -1,8 +1,12 @@
 from src import get_child_state, is_valid_position
 
 def minimax(state, depth, agent):
-    if depth == 0 or state.is_terminal():
+    if depth == 0 or state.is_terminal() and agent == 0:
         return state.utility()
+    
+    if depth == 0 or state.is_terminal() and agent in [1,2]:
+        return state.utility_ghost(agent-1)
+    
     if agent==0:
         max_eval = float("-inf")
         for move in state.MOVES.values():

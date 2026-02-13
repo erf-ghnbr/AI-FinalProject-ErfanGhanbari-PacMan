@@ -1,7 +1,6 @@
 from src import GameState
-from src import get_child_state, get_best_child_state, is_valid_position
-from src import minimax 
-import random
+from src import get_child_state, get_best_child_state, is_valid_position, get_best_ghost_move
+from src import minimax
 
 BOARD_WIDTH = 18
 BOARD_HEIGHT = 9   
@@ -12,7 +11,7 @@ OBSTACLES = [(1,1),(1,2),(1,3),(1,5),(1,6),(1,7),(2,1),(2,7),(3,3),(3,5),(4,0),(
 PACMAN_START = (0, 0)
 GHOSTS_START = [(8,8), (4,4)]
 MOVES = { 'S':(0,0),'U': (0, 1), 'R': (1, 0), 'L': (-1, 0),'D': (0, -1)}
-MAX_DEPTH = 9
+MAX_DEPTH = 8
 PACMAN_MOVES = []
 
 
@@ -45,8 +44,8 @@ def play_game():
 
         print(f"Pacman is at {state.pacman}, Score: {state.score}")
         for i, _ in enumerate(state.ghosts):
-            random_move = random.choice(list(MOVES.values()))
-            state = get_child_state(state, random_move, False, i)
+            best_ghost_move = get_best_ghost_move(state, i, MAX_DEPTH)
+            state = get_child_state(state, best_ghost_move, False, i)
             print(f"Ghost {i+1} is at {state.ghosts[i]}")
         map=""
         for i in reversed(range(0,9)):

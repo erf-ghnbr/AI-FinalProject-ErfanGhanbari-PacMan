@@ -35,8 +35,8 @@ class GameState:
 
             l=0
             if len(self.PACMAN_MOVES) > 0:
-                from src import bfs
-                shortest_path_to_food = bfs(self, self.PACMAN_MOVES[-1], self.MOVES, self.OBSTACLES, self.BOARD_WIDTH, self.BOARD_HEIGHT)
+                from src import bfs_for_food
+                shortest_path_to_food = bfs_for_food(self, self.PACMAN_MOVES[-1], self.MOVES, self.OBSTACLES, self.BOARD_WIDTH, self.BOARD_HEIGHT)
                 if self.pacman in shortest_path_to_food:
                     i=0
                     for pos in shortest_path_to_food:
@@ -49,3 +49,25 @@ class GameState:
 
             return self.score + k  + l
 
+    def utility_ghost(self, ghost_i):
+        if self.is_terminal():
+            if self.pacman in self.ghosts:
+                return float("inf")
+            else:
+                return float("-inf")
+        else:
+
+            l=0
+            from src import bfs_to_pacman
+            shortest_path_to_pacman = bfs_to_pacman(self, self.ghosts[ghost_i], self.MOVES, self.OBSTACLES, self.BOARD_WIDTH, self.BOARD_HEIGHT)
+            if shortest_path_to_pacman and self.ghosts[ghost_i] in shortest_path_to_pacman:
+                i=0
+                for pos in shortest_path_to_pacman:
+                    if self.ghosts[ghost_i] == pos:
+                        break
+                    i += 1
+                l = i * -150
+            else:
+                l=100
+
+            return l
